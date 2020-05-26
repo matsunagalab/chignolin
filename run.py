@@ -37,7 +37,7 @@ integrator = openmm.LangevinIntegrator(300.0*unit.kelvin,   # Temperature of hea
 
 # platform
 platform = openmm.Platform.getPlatformByName('CPU')
-# platform = openmm.Platform.getPlatformByName('CPU')
+# platform = openmm.Platform.getPlatformByName('CUDA')
 # prop = dict(CudaPrecision='mixed')
 
 # Build simulation context
