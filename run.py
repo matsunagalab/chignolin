@@ -38,8 +38,8 @@ integrator.setRandomNumberSeed(777)
 
 # platform
 platform = openmm.Platform.getPlatformByName('CPU')
-# platform = openmm.Platform.getPlatformByName('CUDA')
-# prop = dict(CudaPrecision='mixed')
+#platform = openmm.Platform.getPlatformByName('CUDA')
+#prop = dict(CudaPrecision='mixed')
 
 # Build simulation context
 simulation = app.Simulation(psf.topology, system, integrator, platform)
