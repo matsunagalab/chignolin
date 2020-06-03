@@ -34,16 +34,17 @@ system.addForce(barostat)
 integrator = openmm.LangevinIntegrator(300.0*unit.kelvin,   # Temperature of head bath
                                        1.0/unit.picosecond, # Friction coefficient
                                        0.002*unit.picoseconds) # Time step
-integrator.setRandomNumberSeed(777)
+random.seed()
+integrator.setRandomNumberSeed(random.randint(1,100000))
 
 # platform
-platform = openmm.Platform.getPlatformByName('CPU')
-# platform = openmm.Platform.getPlatformByName('CUDA')
-# prop = dict(CudaPrecision='mixed')
+#platform = openmm.Platform.getPlatformByName('CPU')
+platform = openmm.Platform.getPlatformByName('CUDA')
+prop = dict(CudaPrecision='mixed')
 
 # Build simulation context
-simulation = app.Simulation(psf.topology, system, integrator, platform)
-#simulation = app.Simulation(psf.topology, system, integrator, platform, prop)
+#simulation = app.Simulation(psf.topology, system, integrator, platform)
+simulation = app.Simulation(psf.topology, system, integrator, platform, prop)
 simulation.context.setPositions(positions)
 
 # initial system energy
@@ -58,8 +59,8 @@ print("\nafter minimization")
 print(simulation.context.getState(getEnergy=True).getPotentialEnergy())
 
 # simulation
-reportInterval = 100
-nstep = 10000
+reportInterval = 1 * 10**4
+nstep = 10 * 10**9
 simulation.reporters.append(app.StateDataReporter(sys.stdout, reportInterval, step=True, time=True, potentialEnergy=True, temperature=True, progress=True, remainingTime=True, speed=True, totalSteps=nstep, separator='\t'))
 simulation.reporters.append(mdtraj.reporters.HDF5Reporter('run.h5', reportInterval, coordinates=True, time=True, cell=True, potentialEnergy=True, temperature=True))
 simulation.reporters.append(mdtraj.reporters.DCDReporter('run.dcd', reportInterval))
