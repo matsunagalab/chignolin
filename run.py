@@ -34,7 +34,8 @@ system.addForce(barostat)
 integrator = openmm.LangevinIntegrator(300.0*unit.kelvin,   # Temperature of head bath
                                        1.0/unit.picosecond, # Friction coefficient
                                        0.002*unit.picoseconds) # Time step
-integrator.setRandomNumberSeed(777)
+random.seed()
+integrator.setRandomNumberSeed(random.randint(1,100000))
 
 # platform
 platform = openmm.Platform.getPlatformByName('CPU')
